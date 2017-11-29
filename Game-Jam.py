@@ -1,77 +1,53 @@
-#!/usr/bin/env python
-
-import sys, pygame, random, time, math, glob, json
-import random
+import json, sys
 assert sys.version_info >= (3,4), 'This script requires at least Python 3.4'
 
-# wil be used to import dictionary containing the story and options
-'''
-with open ('') as json_data:
+with open ('C_dict.py') as json_data:
     world = json.load(json_data)
-'''
+    
+def get_response (response):
+    try:
+        return int(response)-1
+    except ValueError:
+        return -1
 
-class Background(pygame.sprite.Sprite):
-                    def __init__(self, image_file, location):
-                        pygame.sprite.Sprite.__init__(self)  #call Sprite initializer
-                        self.image = pygame.image.load('room.jpg')
-                        self.rect = self.image.get_rect()
-                        self.rect.left, self.rect.top = location
+def print_response(count, responses):
+    return str(count +1)
 
-# this might be able to be used in order to put text onto the screen like in the breakout assign
-'''        
-class Game:
-	def __init__(self, font, color, points_position, lives_position):
-		self.font = font
-		self.color = color
-		self.points_position = points_position
-		self.lives_position = lives_position
-		
-	def draw_points(self,screen,points):
-		points = 1
-		f = self.font.render(points,True,self.color)
-		screen.blit(f,points_position)
-
-	def draw_lives(self,screen,lives):
-		lives = 1
-		f = self.font.render(lives,True,self.color)
-		screen.blit(f,lives_position)
-'''
-	
-screen_size = (800,800)
-BackGround = Background('room.jpg', [0,0])
+def check_quit (response):
+    response = str(response)
+    if response.lower() == 'q' or response.lower == 'quit':
+        return True
+    return False
 
 
-def main():
-	pygame.init()
-	font = pygame.font.SysFont("arial",30)
-	screen = pygame.display.set_mode(screen_size)
-	# If we want music in it, this is where it will go
-	'''
-	pygame.mixer.music.load('Music.mp3')
-	pygame.mixer.music.play(-1)
 
-	'''
-	
-	Running = True
-	while Running:
-		screen.fill([255, 255, 255])
-		screen.blit(BackGround.image, BackGround.rect)
-		for event in pygame.event.get():
-			if event.type == pygame.QUIT:
-				pygame.quit()
-				sys.exit(0)
-			if event.type == pygame.MOUSEMOTION:
-				pos = pygame.mouse.get_pos()
-			if event.type == pygame.MOUSEBUTTONUP:
-				pos = pygame.mouse.get_pos()
-			if event.type == pygame.MOUSEBUTTONDOWN:
-				pos = pygame.mouse.get_pos()
-			if event.type == pygame.KEYDOWN:
-				keys = pygame.key.get_pressed()
-		pygame.display.flip()
-
-
-if __name__ == '__main__':
-	main()
-
-
+Running = True
+location = "Begin"
+while Running:
+    #get the current location
+            current = world[location]
+            # print out the description of the current location
+            print(current['description'])
+            #print out the options
+            if current['options'] == []:
+                Running = False
+                continue
+            for count,option in enumerate(current['options']):
+                print('[' + print_response(count,current['options']) + '] ' + option['option'])
+            print('[q] to quit')
+            #get user response
+            response = input('\n\nWhat say you?'  )
+            #see if we need to quit
+            if check_quit(response):
+                Running = False
+                continue
+            #normalize response, convert to int
+            response = get_response(response)
+            #check response against options
+            for count,option in enumerate(current['options']):
+                if (response == count):
+                    location = option['goto']
+                    
+                 
+                
+print("\n\nHow did you do? Die too quickly? Get your wish? Go ahead...Try again! \n\n")
