@@ -49,5 +49,8 @@ while Running:
                     location = option['goto']
                     
                  
-                
+from PIL import Image                                                                                
+img = Image.open('bloodycube.jpg')
+img.show()      
+
 print("\n\nHow did you do? Die too quickly? Get your wish? Go ahead...Try again! \n\n")
