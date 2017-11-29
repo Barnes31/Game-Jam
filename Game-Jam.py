@@ -4,8 +4,9 @@ import sys, pygame, random, time, math, glob, json
 import random
 assert sys.version_info >= (3,4), 'This script requires at least Python 3.4'
 
+# wil be used to import dictionary containing the story and options
 '''
-with open ('z_dict.py') as json_data:
+with open ('') as json_data:
     world = json.load(json_data)
 '''
 
@@ -15,7 +16,9 @@ class Background(pygame.sprite.Sprite):
                         self.image = pygame.image.load('room.jpg')
                         self.rect = self.image.get_rect()
                         self.rect.left, self.rect.top = location
-        
+
+# this might be able to be used in order to put text onto the screen like in the breakout assign
+'''        
 class Game:
 	def __init__(self, font, color, points_position, lives_position):
 		self.font = font
@@ -24,15 +27,15 @@ class Game:
 		self.lives_position = lives_position
 		
 	def draw_points(self,screen,points):
-		points = world['Begin']
+		points = 1
 		f = self.font.render(points,True,self.color)
 		screen.blit(f,points_position)
 
 	def draw_lives(self,screen,lives):
-		lives = str(lives)
+		lives = 1
 		f = self.font.render(lives,True,self.color)
 		screen.blit(f,lives_position)
-
+'''
 	
 screen_size = (800,800)
 BackGround = Background('room.jpg', [0,0])
@@ -42,6 +45,7 @@ def main():
 	pygame.init()
 	font = pygame.font.SysFont("arial",30)
 	screen = pygame.display.set_mode(screen_size)
+	# If we want music in it, this is where it will go
 	'''
 	pygame.mixer.music.load('Music.mp3')
 	pygame.mixer.music.play(-1)
